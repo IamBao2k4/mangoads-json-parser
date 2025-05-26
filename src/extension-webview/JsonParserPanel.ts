@@ -10,38 +10,22 @@ export class JsonParserPanel {
     private readonly _extensionUri: vscode.Uri;
     private _disposables: vscode.Disposable[] = [];
 
-    public static async createOrShow(extensionUri: vscode.Uri) {
-        const column = vscode.window.activeTextEditor
-            ? vscode.window.activeTextEditor.viewColumn
-            : undefined;
-
-        // If we already have a panel, show it.
+    public static createOrShow(extensionUri: vscode.Uri): vscode.WebviewPanel {
         if (JsonParserPanel.currentPanel) {
-            JsonParserPanel.currentPanel._panel.reveal(column);
-            JsonParserPanel.currentPanel._update();
-            return;
+            JsonParserPanel.currentPanel._panel.reveal();
+            return JsonParserPanel.currentPanel._panel;
         }
-
-        // Otherwise, create a new panel.
         const panel = vscode.window.createWebviewPanel(
             JsonParserPanel.viewType,
-            "JSON Parser",
-            column || vscode.ViewColumn.One,
+            "Json Parser",
+            vscode.ViewColumn.One,
             {
-                // Enable javascript in the webview
                 enableScripts: true,
-
-                // And restrict the webview to only loading content from our extension's `media` directory.
-                localResourceRoots: [
-                    vscode.Uri.joinPath(extensionUri, "media"),
-                    vscode.Uri.joinPath(extensionUri, "out/compiled"),
-                ],
+                localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media'), vscode.Uri.joinPath(extensionUri, 'out/compiled')]
             }
         );
-
         JsonParserPanel.currentPanel = new JsonParserPanel(panel, extensionUri);
-
-        JsonParserPanel.handleFileSelect(panel);
+        return panel;
     }
 
     public static async handleFileSelect(panel: vscode.WebviewPanel) {

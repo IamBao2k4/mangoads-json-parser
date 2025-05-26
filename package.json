@@ -9,7 +9,9 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:mangoads-json-parser.jsonParser"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -18,7 +20,25 @@
         "title": "Json Parser",
         "category": "MangoAds"
       }
-    ]
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "mangoads-json-parser.jsonParser",
+          "when": "resourceExtname == .json",
+          "group": "navigation"
+        }
+      ]
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "mangoadsJsonParserView",
+          "name": "MangoAds JSON Parser",
+          "icon": "resources/mango.svg"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
