@@ -1,71 +1,68 @@
-# mangoads-json-parser README
+# MangoAds JSON Parser
 
-This is the README for your extension "mangoads-json-parser". After writing up a brief description, we recommend including the following sections.
-
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+MangoAds JSON Parser is a Visual Studio Code extension that helps you view, edit, and manage JSON files in a user-friendly sidebar view, similar to Copilot Chat. It is designed for developers who frequently work with JSON data and want a more interactive and visual editing experience.
 
 ---
 
-## Following extension guidelines
+## Features
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+- 📂 **Sidebar View:** Access the JSON parser directly from the VS Code sidebar (Explorer view).
+- 📝 **Visual JSON Editor:** Edit JSON files using a dynamic form instead of raw text.
+- 🔄 **Live Update:** Changes in the form are instantly reflected in the JSON structure.
+- 💾 **Save Back to File:** Save your edits directly to the original JSON file.
+- 📑 **File Picker:** Easily select and load any JSON file from your workspace.
+- 🟢 **Supports Nested Structures:** Handles deeply nested objects and arrays.
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+---
 
-## Working with Markdown
+## Requirements
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+- Visual Studio Code v1.100.0 or higher
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+---
 
-## For more information
+## Getting Started
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+1. **Install** the extension from the VS Code Marketplace or from a `.vsix` file.
+2. **Open the Sidebar:** Find "MangoAds JSON Parser" in the Explorer sidebar.
+3. **Pick a JSON File:** Click the "Chọn file JSON" button to select a JSON file from your workspace.
+4. **Edit:** Use the generated form to view and edit your JSON data.
+5. **Save:** Click "Lưu dữ liệu" to save changes back to the file.
 
-**Enjoy!**
+---
+
+## Extension Settings
+
+This extension currently does not contribute any custom settings.
+
+---
+
+## Known Issues
+
+- Only supports `.json` files.
+- Large or highly complex JSON files may render slowly.
+- No schema validation (yet).
+
+---
+
+## Release Notes
+
+### 0.0.1
+
+- Initial release with sidebar view, file picker, and visual JSON editing.
+
+---
+
+## Contributing
+
+Pull requests and suggestions are welcome! Please open an issue to discuss your ideas or report bugs.
+
+---
+
+## License
+
+[MIT]
+
+---
+
+**Enjoy using MangoAds JSON Parser!**

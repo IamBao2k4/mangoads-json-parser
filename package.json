@@ -1,6 +1,7 @@
 {
   "name": "mangoads-json-parser",
   "displayName": "MangoAds Json Parser",
+  "publisher": "barophan",
   "description": "",
   "version": "0.0.1",
   "engines": {
