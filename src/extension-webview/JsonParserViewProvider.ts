@@ -5,7 +5,24 @@ export class JsonParserViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = "mangoadsJsonParserView";
     private _view?: vscode.WebviewView;
 
-    constructor(private readonly _extensionUri: vscode.Uri) {}
+    constructor(private readonly _extensionUri: vscode.Uri) { }
+
+    public static async handleFileSelect(panel: vscode.WebviewView) {
+        // After creating the panel, prompt for file
+        const files = await vscode.window.showOpenDialog({
+            canSelectMany: false,
+            filters: { "JSON files": ["json"] }
+        });
+        if (files && files[0]) {
+            const fileUri = files[0];
+            const content = (await vscode.workspace.fs.readFile(fileUri)).toString();
+            panel.webview.postMessage({
+                type: "loadJson",
+                value: content,
+                filePath: fileUri.fsPath
+            });
+        }
+    }
 
     resolveWebviewView(
         webviewView: vscode.WebviewView,
@@ -20,28 +37,75 @@ export class JsonParserViewProvider implements vscode.WebviewViewProvider {
                 vscode.Uri.joinPath(this._extensionUri, 'out/compiled')
             ]
         };
-        webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
+        webviewView.webview.html = "<html><body>Hello</body></html>";
 
         webviewView.webview.onDidReceiveMessage(async (data) => {
             switch (data.type) {
+                case "onInfo": {
+                    if (!data.value) {
+                        return;
+                    }
+                    vscode.window.showInformationMessage(data.value);
+                    break;
+                }
+                case "onError": {
+                    if (!data.value) {
+                        return;
+                    }
+                    vscode.window.showErrorMessage(data.value);
+                    break;
+                }
                 case "saveJson": {
-                    // ... giữ nguyên logic lưu file như cũ ...
+                    if (!data.value) {
+                        return;
+                    }
+                    console.log("Saving JSON:", data);
+                    const filePath = data.inputPath;
+                    const jsonContent = JSON.stringify(data.value, null, 2);
+
+                    if (filePath) {
+                        try {
+                            await vscode.workspace.fs.writeFile(
+                                vscode.Uri.file(filePath),
+                                Buffer.from(jsonContent, "utf8")
+                            );
+                            vscode.window.showInformationMessage(
+                                `JSON saved to ${filePath}`
+                            );
+                        } catch (error) {
+                            vscode.window.showErrorMessage(
+                                `Failed to save JSON: ${error}`
+                            );
+                        }
+                    } else {
+                        // If no file path is provided, show a save dialog
+                        const options: vscode.SaveDialogOptions = {
+                            defaultUri: vscode.Uri.file("output.json"),
+                            filters: {
+                                "JSON files": ["json"],
+                            },
+                        };
+                        const uri = await vscode.window.showSaveDialog(options);
+                        if (uri) {
+                            try {
+                                await vscode.workspace.fs.writeFile(
+                                    uri,
+                                    Buffer.from(jsonContent, "utf8")
+                                );
+                                vscode.window.showInformationMessage(
+                                    `JSON saved to ${uri.fsPath}`
+                                );
+                            } catch (error) {
+                                vscode.window.showErrorMessage(
+                                    `Failed to save JSON: ${error}`
+                                );
+                            }
+                        }
+                    }
                     break;
                 }
                 case "pickJsonFile": {
-                    const files = await vscode.window.showOpenDialog({
-                        canSelectMany: false,
-                        filters: { "JSON files": ["json"] }
-                    });
-                    if (files && files[0]) {
-                        const fileUri = files[0];
-                        const content = (await vscode.workspace.fs.readFile(fileUri)).toString();
-                        webviewView.webview.postMessage({
-                            type: "loadJson",
-                            value: content,
-                            filePath: fileUri.fsPath
-                        });
-                    }
+                    await JsonParserViewProvider.handleFileSelect(this._view!);
                     break;
                 }
             }
