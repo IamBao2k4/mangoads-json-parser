@@ -25,7 +25,7 @@ export class JsonParserPanel {
         // Otherwise, create a new panel.
         const panel = vscode.window.createWebviewPanel(
             JsonParserPanel.viewType,
-            "HelloWorld",
+            "JSON Parser",
             column || vscode.ViewColumn.One,
             {
                 // Enable javascript in the webview
@@ -41,6 +41,10 @@ export class JsonParserPanel {
 
         JsonParserPanel.currentPanel = new JsonParserPanel(panel, extensionUri);
 
+        JsonParserPanel.handleFileSelect(panel);
+    }
+
+    public static async handleFileSelect(panel: vscode.WebviewPanel) {
         // After creating the panel, prompt for file
         const files = await vscode.window.showOpenDialog({
             canSelectMany: false,
@@ -56,6 +60,7 @@ export class JsonParserPanel {
             });
         }
     }
+        
 
     public static kill() {
         JsonParserPanel.currentPanel?.dispose();
@@ -156,7 +161,10 @@ export class JsonParserPanel {
                     }
                     break;
                 }
-
+                case "pickJsonFile": {
+                    await JsonParserPanel.handleFileSelect(this._panel);
+                    break;
+                }
             }
         });
     }
@@ -198,7 +206,7 @@ export class JsonParserPanel {
 		</head>
         <body>
         <label for="input">Choose a JSON file:</label>
-        <input type="file" id="input" accept=".json">
+        <button id="input">Chọn file JSON</button>
 
         <pre id="output"></pre>
 	    </body>
